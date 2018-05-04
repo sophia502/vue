@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>list</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        #list{
+            width: 400px;
+            height: 500px;
+            margin: 0 auto;
+        }
+        h2{
+            margin: 3px 0;
+            text-align: center;
+        }
+        li{
+            list-style: none;
+            background: #cccccc;
+            margin: 10px 0;
+            height: 50px;
+            line-height: 50px;
+            padding: 0 15px 0 30px;
+            cursor: pointer;
+        }
+        span{
+            float: right;
+            margin: 0 5px;
+        }
+        #list .red{
+            background: #f00;
+        }
+    </style>
+</head>
+<body>
+    <div id='list'>
+        <h2>dolist</h2>
+        <hr>
+        <div>
+                <input type="text" placeholder="请输入名称" v-model='put'>
+                <input type="text" placeholder="请输入价格" v-model='price'>
+                <input type="button" value="提交" @click='add()'>
+        </div>
+        <input type="text" v-model='search' placeholder="输入想查找的内容"><button @click='find()'>搜索</button>
+        <ul>
+            <li v-for='(val,index) in arr' @click='red(val)' :class='{red:val.isRed}'>
+                <input type="checkbox" @click.stop v-model='checked' :value='index' style="float: left; margin-top: 15px; width: 20px; height: 20px;" >
+                <span @click='del(val,index)' style="color: #ff7823">[X]</span>
+                <span style="float: left;">{{val.name}}</span>
+                <span>{{val.pri}}</span>
+            </li>
+        </ul>
+        <hr>
+        <button @click='aldel()'>全部删除</button>  总价:{{sum()}}
+    </div>
+    <script src="vue-min.js"></script>
+    <script>
+        var aa = new Vue({
+            el:'#list',
+            data:{
+                arr:[
+                    {
+                        name:'美容',
+                        pri:123,
+                        isRed: false
+                    },{
+                        name:'口红',
+                        pri:11,
+                        isRed: false
+                    },{
+                        name:'香水',
+                        pri:23,
+                        isRed: false
+                    },{
+                        name:'iPhoneX',
+                        pri:203,
+                        isRed: false
+                    },{
+                        name:'iPhone8',
+                        pri:883,
+                        isRed: false
+                    }
+                ],
+                put:'',
+                price: '',
+                checked:[],
+                search:''
+            },
+            methods:{
+                red(val){
+                    val.isRed = !val.isRed;
+                    // if(val.isRed){
+                    //     this.total += parseInt(val.pri);
+                    // }else{
+                    //     this.total -= parseInt(val.pri);
+                    // }  
+                },
+                sum(){
+                    let sum=0;
+                    this.arr.forEach(function(val,idx){
+                        // console.log(val.name+val.pri+'______'+idx);
+                        if(val.isRed){
+                            sum += parseInt(val.pri);
+                        }
+                    });
+                    return sum;
+                },
+                add(){
+                    if(this.put&&this.price){
+                        this.arr.push({
+                        name:this.put,
+                        pri:this.price
+                         });
+                    }else{
+                        alert('请输入信息');
+                    }
+                    this.put='';
+                    this.price='';
+                },
+                del(e,index){
+                    this.arr.splice(index,1);
+                    
+                },
+                aldel(){
+                    // this.checked.forEach((val)=>{
+                    //     // console.log(this);箭头函数指向定义时候的值，而非运行时候的值
+                    //     this.arr.splice(val,1);
+                    // });
+                    // console.log(this.checked);
+                    let newarr = this.arr.filter((val,idx)=>{
+                        if(!this.checked.includes(idx)){
+                            return val;
+                        }
+                    });
+                    // console.log(newarr);
+                    this.arr = newarr;
+                    this.checked = [];
+                },
+                find(){
+                    let newarr2 = this.arr.filter((val)=>{
+                        if(val.name.includes(this.search)){
+                            return val;
+                        }
+                    });
+                    this.arr = newarr2;
+
+                }
+               
+            }
+        });
+    </script>
+</body>
+</html>
