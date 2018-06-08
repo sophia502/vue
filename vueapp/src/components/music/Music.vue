@@ -1,0 +1,25 @@
+<template>
+    <div>
+        <common-header  bg='rgb(0,150,136)'>
+            <span slot="title">music</span>            
+        </common-header>
+        <router-view/>
+        <common-footer bg='rgb(0,150,136)'></common-footer>
+    </div>
+</template>
+<script>
+import CommonHeader from "../common/Header";
+import CommonFooter from "../common/Footer";
+export default {
+     components:{
+        CommonHeader,
+        CommonFooter
+    }
+};
+</script>
+<style scoped>
+h2{
+    margin: 1rem 0;
+}
+</style>
+
